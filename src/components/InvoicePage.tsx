@@ -7,6 +7,7 @@ import EditableTextarea from './EditableTextarea'
 import EditableCalendarInput from './EditableCalendarInput'
 import EditableFileImage from './EditableFileImage'
 import countryList from '../data/countryList'
+import logo from '../assets/logo_bid1.jpg'
 import Document from './Document'
 import Page from './Page'
 import View from './View'
@@ -149,7 +150,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             <EditableFileImage
               className="logo"
               placeholder="Your Logo"
-              value={invoice.logo}
+              value={logo}
               width={invoice.logoWidth}
               pdfMode={pdfMode}
               onChangeImage={(value) => handleChange('logo', value)}
