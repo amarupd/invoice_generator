@@ -3,7 +3,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer'
 import { Invoice, TInvoice } from '../data/types'
 import { useDebounce } from '@uidotdev/usehooks'
 import InvoicePage from './InvoicePage'
-import FileSaver from 'file-saver'
+// import FileSaver from 'file-saver'
 
 interface Props {
   data: Invoice

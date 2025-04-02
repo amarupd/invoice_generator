@@ -158,7 +158,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             />
             <EditableInput
               className="fs-20 bold"
-              placeholder="Your Company"
+              placeholder="Banaras Interior Decor"
               value={invoice.companyName}
               onChange={(value) => handleChange('companyName', value)}
               pdfMode={pdfMode}
@@ -435,7 +435,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               <View className="w-50 p-5 flex" pdfMode={pdfMode}>
                 <EditableInput
                   className="dark bold right ml-30"
-                  value={invoice.currency}
+                  value='₹'
                   onChange={(value) => handleChange('currency', value)}
                   pdfMode={pdfMode}
                 />
