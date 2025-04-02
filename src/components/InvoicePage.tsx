@@ -183,7 +183,8 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             />
             <EditableSelect
               options={countryList}
-              value={invoice.companyCountry}
+              // value={invoice.companyCountry}
+              value='India'
               onChange={(value) => handleChange('companyCountry', value)}
               pdfMode={pdfMode}
             />
@@ -227,7 +228,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             />
             <EditableSelect
               options={countryList}
-              value={invoice.clientCountry}
+              value='India'
               onChange={(value) => handleChange('clientCountry', value)}
               pdfMode={pdfMode}
             />
