@@ -414,7 +414,21 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
                   value={invoice.taxLabel}
-                  onChange={(value) => handleChange('taxLabel', value)}
+                  onChange={() => handleChange('taxLabel', 9)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-50 p-5" pdfMode={pdfMode}>
+                <Text className="right bold dark" pdfMode={pdfMode}>
+                  {saleTax?.toFixed(2)}
+                </Text>
+              </View>
+            </View>
+            <View className="flex" pdfMode={pdfMode}>
+              <View className="w-50 p-5" pdfMode={pdfMode}>
+                <EditableInput
+                  value={invoice.taxLabel}
+                  onChange={() => handleChange('taxLabel', 9)}
                   pdfMode={pdfMode}
                 />
               </View>

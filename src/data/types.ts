@@ -40,6 +40,7 @@ export const TInvoice = z.object({
   productLines: z.array(TProductLine),
   subTotalLabel: z.string(),
   taxLabel: z.string(),
+  taxLabel2: z.string(),
   totalLabel: z.string(),
   currency: z.string(),
   notesLabel: z.string(),
