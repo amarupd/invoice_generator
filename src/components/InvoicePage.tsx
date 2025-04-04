@@ -15,6 +15,8 @@ import Text from './Text'
 import { Font } from '@react-pdf/renderer'
 import Download from './DownloadPDF'
 import { format } from 'date-fns/format'
+// import { toWords } from "number-to-words";
+
 
 Font.register({
   family: 'Nunito',
@@ -32,6 +34,47 @@ interface Props {
   pdfMode?: boolean
   onChange?: (invoice: Invoice) => void
 }
+
+const AmountInWords = (amount: number | string): string => {
+  if (!amount || isNaN(Number(amount))) return "Zero";
+
+  // console.log("jjkdhjfdf", amount);
+
+
+  const a = [
+    "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+    "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"
+  ];
+  const b = [
+    "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
+  ];
+
+  const numToWords = (num: number): string => {
+    if (num < 20) return a[num];
+    if (num < 100) return b[Math.floor(num / 10)] + (num % 10 !== 0 ? " " + a[num % 10] : "");
+    if (num < 1000) return a[Math.floor(num / 100)] + " Hundred" + (num % 100 > 0 ? " " + numToWords(num % 100) : "");
+    if (num < 100000) return numToWords(Math.floor(num / 1000)) + " Thousand" + (num % 1000 !== 0 ? " " + numToWords(num % 1000) : "");
+    if (num < 10000000) return numToWords(Math.floor(num / 100000)) + " Lakh" + (num % 100000 !== 0 ? " " + numToWords(num % 100000) : "");
+    return numToWords(Math.floor(num / 10000000)) + " Crore" + (num % 10000000 !== 0 ? " " + numToWords(num % 10000000) : "");
+  };
+
+  // console.log(amount);
+
+  const [integerPart, decimalPart] = amount.toString().split(".");
+  let words = numToWords(parseInt(integerPart, 10)) + " Rupees";
+
+  if (decimalPart && parseInt(decimalPart, 10) > 0) {
+    words += " and " + numToWords(parseInt(decimalPart, 10)) + " Paise";
+  }
+
+  console.log(words);
+
+
+  return words + " Only";
+};
+
+
+
 
 const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(data ? { ...data } : { ...initialInvoice })
@@ -62,6 +105,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
       setInvoice(newInvoice)
     }
   }
+
 
   const handleProductLineChange = (index: number, name: keyof ProductLine, value: string) => {
     const productLines = invoice.productLines.map((productLine, i) => {
@@ -165,19 +209,19 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             />
             <EditableInput
               placeholder="Your Name"
-              value={invoice.name}
+              value='Banaras Interior & Decor'
               onChange={() => handleChange('name', 'Banaras Interior & Decor')}
               pdfMode={pdfMode}
             />
             <EditableInput
               placeholder="Company's Address"
-              value={invoice.companyAddress}
+              value='S 9/111 h, Naibasti, Pandeypur'
               onChange={() => handleChange('companyAddress', 'S 9/111 h, Naibasti, Pandeypur')}
               pdfMode={pdfMode}
             />
             <EditableInput
               placeholder="City, State Zip"
-              value={invoice.companyAddress2}
+              value='Varanasi - 221002, UP'
               onChange={() => handleChange('companyAddress2', 'Varanasi - 221002, UP')}
               pdfMode={pdfMode}
             />
@@ -189,25 +233,55 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
-          <View className="flex-row w-100 justify-end" pdfMode={pdfMode}>
-            <View className="w-50" pdfMode={pdfMode}>
+          {/* <View className="flex-row w-100 justify-start" pdfMode={pdfMode}> */}
+
+          <View className="w-45" pdfMode={pdfMode}>
+            <View className="w-62" pdfMode={pdfMode}>
               <EditableInput
-                placeholder="Your Name"
-                label="GST number"
-                value={invoice.name}
-                onChange={() => handleChange('name', 'Banaras Interior & Decor')}
-                pdfMode={pdfMode}
-              />
-            </View>
-            <View className="w-50" pdfMode={pdfMode}>
-              <EditableInput
-                className="fs-45 right bold"
+                className="fs-45 bold"
                 placeholder="Invoice"
                 value={invoice.title}
                 onChange={(value) => handleChange('title', value)}
                 pdfMode={pdfMode}
               />
             </View>
+            <View className="flex mb-5" pdfMode={pdfMode}>
+              <View className="w-40" pdfMode={pdfMode}>
+                <EditableInput
+                  className="bold"
+                  value="GSTIN No. :"
+                  onChange={(value) => handleChange('invoiceTitleLabel', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-60" pdfMode={pdfMode}>
+                <EditableInput
+                  placeholder="INV-12"
+                  value='09ALKPG3659C1Z3'
+                  onChange={(value) => handleChange('invoiceTitle', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+            </View>
+            <View className="flex mb-5" pdfMode={pdfMode}>
+              <View className="w-40" pdfMode={pdfMode}>
+                <EditableInput
+                  className="bold"
+                  value="PAN No.: "
+                  onChange={(value) => handleChange('invoiceTitleLabel', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-60" pdfMode={pdfMode}>
+                <EditableInput
+                  placeholder="INV-12"
+                  value='ALKPG3659C'
+                  onChange={(value) => handleChange('invoiceTitle', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+            </View>
+
           </View>
 
         </View>
@@ -246,6 +320,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             />
           </View>
           <View className="w-45" pdfMode={pdfMode}>
+
             <View className="flex mb-5" pdfMode={pdfMode}>
               <View className="w-40" pdfMode={pdfMode}>
                 <EditableInput
@@ -425,7 +500,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             <View className="flex" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
-                  value={invoice.taxLabel}
+                  value='CGST @ 9%'
                   onChange={() => handleChange('taxLabel', 9)}
                   pdfMode={pdfMode}
                 />
@@ -439,7 +514,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             <View className="flex" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
-                  value={invoice.taxLabel}
+                  value='SGST @ 9%'
                   onChange={() => handleChange('taxLabel', 9)}
                   pdfMode={pdfMode}
                 />
@@ -468,14 +543,30 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 />
                 <Text className="right bold dark w-auto" pdfMode={pdfMode}>
                   {(typeof subTotal !== 'undefined' && typeof saleTax !== 'undefined'
-                    ? subTotal + saleTax
+                    ? subTotal + saleTax + saleTax
                     : 0
                   ).toFixed(2)}
                 </Text>
               </View>
             </View>
+
           </View>
         </View>
+        <View className="border p-3 flex flex-col" pdfMode={pdfMode}>
+        <View className="border p-3 flex flex-row items-center" pdfMode={pdfMode}>
+  <Text className="bold whitespace-nowrap" pdfMode={pdfMode}>
+    In Words:
+  </Text>
+  <Text className="bold dark ml-2 whitespace-nowrap" pdfMode={pdfMode}>
+    {(() => {
+      const total = (subTotal ?? 0) + (saleTax ?? 0) + (saleTax ?? 0);
+      return `${AmountInWords(total)}`;
+    })()}
+  </Text>
+</View>
+
+        </View>
+
 
         <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
@@ -487,7 +578,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
           <EditableTextarea
             className="w-100"
             rows={2}
-            value={invoice.notes}
+            value='Certified that all particulars given above are true and correct. The amount represents the price actually charged and there is no flow of additional consideration directly or indirectly from the Service Recipient.'
             onChange={(value) => handleChange('notes', value)}
             pdfMode={pdfMode}
           />
