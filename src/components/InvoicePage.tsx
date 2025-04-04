@@ -24,7 +24,7 @@ Font.register({
     { src: 'https://fonts.gstatic.com/s/nunito/v12/XRXV3I6Li01BKofINeaE.ttf' },
     {
       src: 'https://fonts.gstatic.com/s/nunito/v12/XRXW3I6Li01BKofA6sKUYevN.ttf',
-      fontWeight: 600,
+      fontWeight: 300,
     },
   ],
 })
@@ -238,7 +238,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
           <View className="w-45" pdfMode={pdfMode}>
             <View className="w-62" pdfMode={pdfMode}>
               <EditableInput
-                className="fs-45 bold"
+                className="fs-30 bold"
                 placeholder="Invoice"
                 value={invoice.title}
                 onChange={(value) => handleChange('title', value)}
@@ -276,6 +276,24 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 <EditableInput
                   placeholder="INV-12"
                   value='ALKPG3659C'
+                  onChange={(value) => handleChange('invoiceTitle', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+            </View>
+            <View className="flex mb-5" pdfMode={pdfMode}>
+              <View className="w-40" pdfMode={pdfMode}>
+                <EditableInput
+                  className="bold"
+                  value="PO No.: "
+                  onChange={(value) => handleChange('invoiceTitleLabel', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-60" pdfMode={pdfMode}>
+                <EditableInput
+                  placeholder="INV-12"
+                  value='LTFH/PO/202425/NEWA 068/03/IS4558/14177'
                   onChange={(value) => handleChange('invoiceTitle', value)}
                   pdfMode={pdfMode}
                 />
@@ -552,21 +570,11 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
 
           </View>
         </View>
-        <View className="border p-3 flex flex-col" pdfMode={pdfMode}>
-        <View className="border p-3 flex flex-row items-center" pdfMode={pdfMode}>
-  <Text className="bold whitespace-nowrap" pdfMode={pdfMode}>
-    In Words:
-  </Text>
-  <Text className="bold dark ml-2 whitespace-nowrap" pdfMode={pdfMode}>
-    {(() => {
-      const total = (subTotal ?? 0) + (saleTax ?? 0) + (saleTax ?? 0);
-      return `${AmountInWords(total)}`;
-    })()}
-  </Text>
-</View>
-
+        <View className="border p-3 flex flex-row items-center gap-1" pdfMode={pdfMode}>
+          <Text className="bold dark whitespace-nowrap w-full" pdfMode={pdfMode}>
+            {"In Words: " + AmountInWords((subTotal ?? 0) + (saleTax ?? 0) + (saleTax ?? 0)).trim()}
+          </Text>
         </View>
-
 
         <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
@@ -593,7 +601,11 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
           <EditableTextarea
             className="w-100"
             rows={2}
-            value={invoice.term}
+            value='The goods and services covered under this invoice will be delivered as per the agreed terms. While we strive to meet delivery deadlines, unforeseen circumstances such as force majeure events, technical issues, or supply chain disruptions may cause delays, which will be communicated to the client as necessary. Any modifications to the order after invoicing may be subject to additional charges or approval from both parties.
+
+Ownership of any goods or intellectual property associated with the services remains with Banaras Interior & Decor until full payment has been received and acknowledged. No warranties, either expressed or implied, are provided beyond what is explicitly stated in the service agreement, and our total liability is limited to the invoiced amount. In the event of any disputes arising from this transaction, they shall be resolved amicably between both parties, failing which the matter shall be subject to the jurisdiction of the courts in Varanasi.
+
+This invoice is considered final, and cancellations or refunds are not permitted unless explicitly agreed upon in writing by both parties. Any confidential or proprietary information exchanged during the course of the transaction shall not be shared with third parties without prior consent. By proceeding with the payment of this invoice, the client acknowledges and agrees to the terms and conditions outlined herein.'
             onChange={(value) => handleChange('term', value)}
             pdfMode={pdfMode}
           />
