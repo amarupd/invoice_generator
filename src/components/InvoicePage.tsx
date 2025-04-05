@@ -290,7 +290,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
               </View>
-              <View className="w-60" pdfMode={pdfMode}>
+              <View className="w-70" pdfMode={pdfMode}>
                 <EditableInput
                   placeholder="INV-12"
                   value='LTFH/PO/202425/NEWA 068/03/IS4558/14177'
@@ -552,10 +552,10 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
               </View>
-              <View className="w-50 p-5 flex" pdfMode={pdfMode}>
+              <View className="w-80 p-5 flex" pdfMode={pdfMode}>
                 <EditableInput
                   className="dark bold right ml-30"
-                  value='₹'
+                  value='Rs.'
                   onChange={(value) => handleChange('currency', value)}
                   pdfMode={pdfMode}
                 />
@@ -591,6 +591,31 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             pdfMode={pdfMode}
           />
         </View>
+        <View className="flex" pdfMode={pdfMode}>
+          <View className="w-50 mt-10" pdfMode={pdfMode}>
+
+          </View>
+          <View className="w-50 mt-10" pdfMode={pdfMode}>
+
+            <View className="flex" pdfMode={pdfMode}>
+              <View className="w-20 p-5" pdfMode={pdfMode}>
+                
+              </View>
+              <View className="w-100 p-5" pdfMode={pdfMode}>
+                <Text className="right bold dark" pdfMode={pdfMode}>
+                  For Banaras Interior & Decor
+                </Text>
+                <Text className="right bold dark" pdfMode={pdfMode}>
+                  Authorised Signatory
+                </Text>
+              </View>
+            </View>
+
+
+
+          </View>
+        </View>
+
         <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
             className="bold w-100"
